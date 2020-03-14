@@ -1,0 +1,4 @@
+﻿  task2.cpp
+c:\users\ангелина\desktop\cpp\task2\task2\task2\task2.cpp(6): warning C4067: непредвиденные лексемы за директивой препроцессора, требуется newline
+c:\users\ангелина\desktop\cpp\task2\task2\task2\task2.cpp(39): warning C4244: =: преобразование "long double" в "int", возможна потеря данных
+  task2.vcxproj -> C:\Users\Ангелина\Desktop\cpp\task2\task2\Debug\task2.exe
