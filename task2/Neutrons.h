@@ -6,8 +6,11 @@ class Neutrons: public Nucleon
 {
 public:
 	Neutrons();
-	~Neutrons();
+	virtual string get_name();
+	~Neutrons() override {};
 private:
 	const long double NEUTRONS_WEIGHT = 1.674e-27;
+	const long double NEUTRONS_CHARGE = 0;
+	string NAME = "NEUTRONS";
 };
 

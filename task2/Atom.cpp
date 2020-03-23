@@ -4,47 +4,91 @@
 using namespace std;
 
 Atom::Atom() {}
-Atom::Atom(string name, long double atomic_mass, Electron *electrons, Proton *protons, Neutrons *neutrons, int elc_count, int prt_count, int neutr_count)
+Atom::Atom(const Atom &to_copy)
+{
+	this->name = to_copy.name;      ///// почему можем получить доступ к приватным полям
+	this->atomic_mass = to_copy.atomic_mass;
+	this->prt_count = to_copy.prt_count;
+	this->elc_count = to_copy.elc_count;
+	this->neutr_count = to_copy.neutr_count;
+	for (int i = 0; i < to_copy.particles.size(); i++)
+	{
+		ElementaryParticle *cur;
+		if (to_copy.particles[i]->get_name() == "ELECTRON")
+		{
+			cur = new Electron();
+		}
+		else if (to_copy.particles[i]->get_name() == "PROTON")
+		{
+			cur = new Proton();
+		}
+		else if (to_copy.particles[i]->get_name() == "NEUTRONS") 
+		{
+			cur = new Neutrons();
+		}
+		else
+		{
+			throw 4;
+		}
+		this->add_particle(cur);
+	}
+}
+Atom::Atom(string name, long double atomic_mass, Electron *electrons, Proton *protons, Neutrons *neutrons, int elc_count, int prt_count)
 {
 	this->name = name;
-	this->atomic_mass = atomic_mass;
-	this->electrons = electrons;
-	this->protons = protons;
-	this->neutrons = neutrons;
+	this->atomic_mass = atomic_mass * ATOMIC_MASS_UNIT;
 	this->elc_count = elc_count;
 	this->prt_count = prt_count;
-	this->neutr_count = neutr_count;
-}
-Atom::Atom(string name, long double atomic_mass, Electron *electrons, Proton *protons, int elc_count, int prt_count)
-{
-	this->name = name;
-	this->atomic_mass = atomic_mass;
-	this->electrons = electrons;
-	this->protons = protons;
-	this->elc_count = elc_count;
-	this->prt_count = prt_count;
-}
-
-long double Atom::el_particles_weight()
-{
-	long double sum_weight = 0;
-	Proton *cur_prt = protons;
-	Neutrons *cur_neutr = neutrons;
-	Electron *cur_electron = electrons;
+	this->neutr_count = round(atomic_mass) - prt_count;
+	Electron *p_elc = electrons;
+	for(int i = 0; i < elc_count; i++)
+	{
+		this->add_particle(p_elc);
+		p_elc++;
+	}
+	Proton *p_prt = protons;
 	for (int i = 0; i < prt_count; i++)
 	{
-		sum_weight += (*cur_prt).get_weight();
-		cur_prt++;
+		this->add_particle(p_prt);
+		p_prt++;
+	}
+	Neutrons *p_ntr = neutrons;
+	for (int i = 0; i < neutr_count; i++)
+	{
+		this->add_particle(p_ntr);
+		p_ntr;
+	}
+}
+Atom::Atom(string name, long double atomic_mass, int elc_count, int prt_count)
+{
+	this->name = name;
+	this->atomic_mass = atomic_mass * ATOMIC_MASS_UNIT;
+	this->elc_count = elc_count;
+	this->prt_count = prt_count;
+	this->neutr_count = round(atomic_mass) - prt_count;
+	for (int i = 0; i < elc_count; i++)
+	{
+		Electron *electron = new Electron();
+		this->add_particle(electron);
+	}
+	for (int i = 0; i < prt_count; i++)
+	{
+		Proton *proton = new Proton();
+		this->add_particle(proton);
 	}
 	for (int i = 0; i < neutr_count; i++)
 	{
-		sum_weight += (*cur_neutr).get_weight();
-		cur_neutr++;
+		Neutrons *neutron = new Neutrons();
+		this->add_particle(neutron);
 	}
-	for (int i = 0; i < elc_count; i++)
+}
+
+long double Atom::el_particles_mass()
+{
+	long double sum_weight = 0;
+	for (int i = 0; i < particles.size(); i++)
 	{
-		sum_weight += (*cur_electron).get_weight();
-		cur_electron++;
+		sum_weight += particles[i]->get_weight();
 	}
 	return sum_weight;
 }
@@ -69,34 +113,13 @@ string Atom::get_name()
 	return this->name;
 }
 
-void Atom::set_protons(Proton *protons) 
+void Atom::add_particle(ElementaryParticle *new_particle)
 {
-	this->protons = protons;
-}
-
-Proton *Atom::get_protons()
-{
-	return this->protons;
-}
-
-void Atom::set_neutrons(Neutrons *neutrons)
-{
-	this->neutrons = neutrons;
-}
-
-Neutrons *Atom::get_neutrons()
-{
-	return this->neutrons;
-}
-
-void Atom::set_electrons(Electron *electrons)
-{
-	this->electrons = electrons;
-}
-
-Electron *Atom::get_electrons()
-{
-	return this->electrons;
+	if (!new_particle)
+	{
+		return;
+	}
+	this->particles.push_back(new_particle);
 }
 
 void Atom::set_prt_count(int prt_count)
@@ -131,5 +154,9 @@ int Atom::get_electrons_count()
 
 Atom::~Atom() 
 {
+	for (auto it = this->particles.begin(); it != this->particles.end(); ++it)
+	{
+		delete *it;
+	}
 }
 

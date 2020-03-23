@@ -3,5 +3,8 @@
 
 class Nucleon: public ElementaryParticle
 {
+protected:
+	Nucleon();
+	~Nucleon();
 };
 

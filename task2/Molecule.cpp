@@ -6,42 +6,53 @@ Molecule::Molecule()
 {
 }
 
-Molecule::Molecule(string name, Atom *atoms, int atoms_count)
+Molecule::Molecule(string name, vector<Atom *> atoms, int atoms_count)
 {
 	this->name = name;
 	this->atoms = atoms;
 	this->atoms_count = atoms_count;
+	set_composition();
+}
+Molecule::Molecule(string name, vector<Atom *> atoms, map<string, int> composition, int atoms_count)
+{
+	this->name = name;
+	this->atoms = atoms;
+	this->atoms_count = atoms_count;
+	this->composition = composition;
 }
 
-map<string, int> Molecule::molecule_info()
+void Molecule::get_info()
 {
-	map<string, int> types_counter;
-	Atom *cur_atom = this->atoms;
-	for (int i = 0; i < atoms_count; i++)
+	cout << "Molecule name: " << this->get_name() << endl;
+	cout << "Elementary particles' mass: " << this->el_particles_mass() << endl;
+	cout << "Molecule mass: " << this->molecule_mass() << endl;
+	for (auto item = this->composition.begin(); item != this->composition.end(); ++item)
 	{
-		int is_el = types_counter.count((*cur_atom).get_name());
-		if (is_el)
+		cout << "Count of " << item->first << " : " << item->second << endl;
+	}
+}
+
+void Molecule::set_composition()
+{
+	for (int i = 0; i < this->atoms_count; i++)
+	{
+		if (!this->composition.count(this->atoms[i]->get_name()))
 		{
-			types_counter.at((*cur_atom).get_name()) = ++types_counter.find((*cur_atom).get_name())->second;
+			this->composition.insert(pair<string, int>(this->atoms[i]->get_name(), 1));
 		}
 		else
 		{
-			types_counter.insert(pair<string, int>((*cur_atom).get_name(), 1));
+			this->composition.at(this->atoms[i]->get_name()) += 1;
 		}
-		cur_atom++;
 	}
-	
-	return types_counter;
 }
 
 long double Molecule::el_particles_mass()
 {
 	long double sum_weight = 0;
-	Atom *cur_atom = this->atoms;
 	for (int i = 0; i < atoms_count; i++)
 	{
-		sum_weight += (*cur_atom).el_particles_weight();
-		cur_atom++;
+		sum_weight += this->atoms[i]->el_particles_mass();
 	}
 	return sum_weight;
 }
@@ -49,11 +60,9 @@ long double Molecule::el_particles_mass()
 long double Molecule::molecule_mass()
 {
 	long double sum_mass = 0;
-	Atom *cur_atom = this->atoms;
 	for (int i = 0; i < atoms_count; i++)
 	{
-		sum_mass += (*cur_atom).get_atomic_mass();
-		cur_atom++;
+		sum_mass += this->atoms[i]->get_atomic_mass();
 	}
 	return sum_mass;
 }
@@ -68,12 +77,12 @@ int Molecule::get_atoms_count()
 	return this->atoms_count;
 }
 
-void Molecule::set_atoms(Atom *atoms)
+void Molecule::set_atoms(vector<Atom *> atoms)
 {
 	this->atoms = atoms;
 }
 
-Atom *Molecule::get_atoms()
+vector<Atom *> Molecule::get_atoms()
 {
 	return this->atoms;
 }
@@ -90,4 +99,8 @@ string Molecule::get_name()
 
 Molecule::~Molecule()
 {
+	for (auto it = this->atoms.begin(); it != this->atoms.end(); ++it)
+	{
+		delete *it;
+	}
 }

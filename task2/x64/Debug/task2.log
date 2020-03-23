@@ -1,0 +1,11 @@
+﻿  Atom.cpp
+c:\users\ангелина\desktop\cpp\molecule-creator\task2\atom.cpp(42): warning C4244: =: преобразование "long double" в "int", возможна потеря данных
+c:\users\ангелина\desktop\cpp\molecule-creator\task2\atom.cpp(68): warning C4244: =: преобразование "long double" в "int", возможна потеря данных
+  Molecule.cpp
+  Neutrons.cpp
+  Nucleon.cpp
+  Proton.cpp
+  task2.cpp
+c:\users\ангелина\desktop\cpp\molecule-creator\task2\task2.cpp(6): warning C4067: непредвиденные лексемы за директивой препроцессора, требуется newline
+  Создание кода...
+  task2.vcxproj -> C:\Users\Ангелина\Desktop\cpp\molecule-creator\x64\Debug\task2.exe
