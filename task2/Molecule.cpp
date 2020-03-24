@@ -24,8 +24,7 @@ Molecule::Molecule(string name, vector<Atom *> atoms, map<string, int> compositi
 void Molecule::get_info()
 {
 	cout << "Molecule name: " << this->get_name() << endl;
-	cout << "Elementary particles' mass: " << this->el_particles_mass() << endl;
-	cout << "Molecule mass: " << this->molecule_mass() << endl;
+	cout << "Molecule's mass: " << this->get_weight() << endl;
 	for (auto item = this->composition.begin(); item != this->composition.end(); ++item)
 	{
 		cout << "Count of " << item->first << " : " << item->second << endl;
@@ -47,24 +46,14 @@ void Molecule::set_composition()
 	}
 }
 
-long double Molecule::el_particles_mass()
+long double Molecule::get_weight()
 {
 	long double sum_weight = 0;
 	for (int i = 0; i < atoms_count; i++)
 	{
-		sum_weight += this->atoms[i]->el_particles_mass();
+		sum_weight += this->atoms[i]->get_weight();
 	}
 	return sum_weight;
-}
-
-long double Molecule::molecule_mass()
-{
-	long double sum_mass = 0;
-	for (int i = 0; i < atoms_count; i++)
-	{
-		sum_mass += this->atoms[i]->get_atomic_mass();
-	}
-	return sum_mass;
 }
 
 void Molecule::set_atoms_count(int atoms_count)
@@ -90,11 +79,6 @@ vector<Atom *> Molecule::get_atoms()
 void Molecule::set_name(string name)
 {
 	this->name = name;
-}
-
-string Molecule::get_name()
-{
-	return this->name;
 }
 
 Molecule::~Molecule()

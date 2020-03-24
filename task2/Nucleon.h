@@ -1,10 +1,10 @@
 #pragma once
-#include "ElementaryParticle.h"
+#include "Particle.h"
 
-class Nucleon: public ElementaryParticle
+class Nucleon: public Particle
 {
 protected:
-	Nucleon();
-	~Nucleon();
+	Nucleon() {};
+	~Nucleon() {};
 };
 

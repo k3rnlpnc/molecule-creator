@@ -7,11 +7,10 @@ using namespace std;
 Neutrons::Neutrons()
 {
 	this->weight = NEUTRONS_WEIGHT;
-	this->charge = NEUTRONS_CHARGE;
 	this->name = NAME;
 }
 
-string Neutrons::get_name()
+long double Neutrons::get_weight()
 {
-	return this->name;
+	return this->weight;
 }

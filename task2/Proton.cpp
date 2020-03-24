@@ -7,11 +7,10 @@ using namespace std;
 Proton::Proton()
 {
 	this->weight = PROTON_WEIGHT;
-	this->charge = PROTON_CHARGE;
 	this->name = NAME;
 }
 
-string Proton::get_name()
+long double Proton::get_weight()
 {
-	return this->name;
+	return this->weight;
 }

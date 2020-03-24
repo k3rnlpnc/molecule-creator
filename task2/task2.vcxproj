@@ -149,7 +149,7 @@
   <ItemGroup>
     <ClInclude Include="Atom.h" />
     <ClInclude Include="Electron.h" />
-    <ClInclude Include="ElementaryParticle.h" />
+    <ClInclude Include="Particle.h" />
     <ClInclude Include="Molecule.h" />
     <ClInclude Include="Neutrons.h" />
     <ClInclude Include="Nucleon.h" />
@@ -160,10 +160,9 @@
   <ItemGroup>
     <ClCompile Include="Atom.cpp" />
     <ClCompile Include="Electron.cpp" />
-    <ClCompile Include="ElementaryParticle.cpp" />
     <ClCompile Include="Molecule.cpp" />
     <ClCompile Include="Neutrons.cpp" />
-    <ClCompile Include="Nucleon.cpp" />
+    <ClCompile Include="Particle.cpp" />
     <ClCompile Include="Proton.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

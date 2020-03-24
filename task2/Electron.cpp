@@ -5,11 +5,10 @@
 Electron::Electron()
 {
 	this->weight = ELECTRON_WEIGHT;
-	this->charge = ELECTRON_CHARGE;
 	this->name = NAME;
 }
 
-string Electron::get_name()
+long double Electron::get_weight()
 {
-	return this->name;
+	return this->weight;
 }

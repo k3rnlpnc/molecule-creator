@@ -6,14 +6,13 @@ using namespace std;
 Atom::Atom() {}
 Atom::Atom(const Atom &to_copy)
 {
-	this->name = to_copy.name;      ///// почему можем получить доступ к приватным полям
-	this->atomic_mass = to_copy.atomic_mass;
+	this->name = to_copy.name;
 	this->prt_count = to_copy.prt_count;
 	this->elc_count = to_copy.elc_count;
 	this->neutr_count = to_copy.neutr_count;
 	for (int i = 0; i < to_copy.particles.size(); i++)
 	{
-		ElementaryParticle *cur;
+		Particle *cur;
 		if (to_copy.particles[i]->get_name() == "ELECTRON")
 		{
 			cur = new Electron();
@@ -33,13 +32,12 @@ Atom::Atom(const Atom &to_copy)
 		this->add_particle(cur);
 	}
 }
-Atom::Atom(string name, long double atomic_mass, Electron *electrons, Proton *protons, Neutrons *neutrons, int elc_count, int prt_count)
+Atom::Atom(string name, Electron *electrons, Proton *protons, Neutrons *neutrons, int elc_count, int prt_count, int neutr_count)
 {
 	this->name = name;
-	this->atomic_mass = atomic_mass * ATOMIC_MASS_UNIT;
 	this->elc_count = elc_count;
 	this->prt_count = prt_count;
-	this->neutr_count = round(atomic_mass) - prt_count;
+	this->neutr_count = neutr_count;
 	Electron *p_elc = electrons;
 	for(int i = 0; i < elc_count; i++)
 	{
@@ -59,13 +57,12 @@ Atom::Atom(string name, long double atomic_mass, Electron *electrons, Proton *pr
 		p_ntr;
 	}
 }
-Atom::Atom(string name, long double atomic_mass, int elc_count, int prt_count)
+Atom::Atom(string name, int elc_count, int prt_count, int neutr_count)
 {
 	this->name = name;
-	this->atomic_mass = atomic_mass * ATOMIC_MASS_UNIT;
 	this->elc_count = elc_count;
 	this->prt_count = prt_count;
-	this->neutr_count = round(atomic_mass) - prt_count;
+	this->neutr_count = neutr_count;
 	for (int i = 0; i < elc_count; i++)
 	{
 		Electron *electron = new Electron();
@@ -83,7 +80,7 @@ Atom::Atom(string name, long double atomic_mass, int elc_count, int prt_count)
 	}
 }
 
-long double Atom::el_particles_mass()
+long double Atom::get_weight()
 {
 	long double sum_weight = 0;
 	for (int i = 0; i < particles.size(); i++)
@@ -93,27 +90,12 @@ long double Atom::el_particles_mass()
 	return sum_weight;
 }
 
-void Atom::set_atomic_mass(double amu)
-{
-	this->atomic_mass = amu * ATOMIC_MASS_UNIT;
-}
-
-long double Atom::get_atomic_mass()
-{
-	return this->atomic_mass;
-}
-
 void Atom::set_name(string name)
 {
 	this->name = name;
 }
 
-string Atom::get_name()
-{
-	return this->name;
-}
-
-void Atom::add_particle(ElementaryParticle *new_particle)
+void Atom::add_particle(Particle *new_particle)
 {
 	if (!new_particle)
 	{
